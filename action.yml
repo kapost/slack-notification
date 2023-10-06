@@ -1,4 +1,4 @@
-name: slack-notification
+name: kap-slack-notification
 description: "This action creates a docker container with AWS CLI and GitHub CLI installed to message Slack users and channels"
 branding:
   icon: 'terminal'

@@ -54,7 +54,7 @@ jobs:
 | ---- | ---- | ---- |
 | S3_URL | URL of the S3 mapping file | s3://my-bucket/path/to/mapping.yml |
 | PAT_TOKEN | Personal Access Token with permissions to read reviewers and pull requests | ghp_MyTokenCreatedInGithub |
-| PR_NUMBER | Pull Request Number - Best to pull from the Pull Request event | 1 |
+| PR_NUMBER | Pull Request Number - Advised to pull from the Pull Request event | 1 |
 | GITHUB_REPO | GitHub Owner and Repository | kapost/slack-notification |
 | PR_MESSAGE | Message to send to the Slack user(s) or channel(s) | "Hello World!" |
 | PR_WEBHOOK_URL | Slack Webhook URL | https://hooks.slack.com/services/ABCD/ABCD1234 |
