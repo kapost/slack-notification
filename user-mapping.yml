@@ -1,9 +1,9 @@
 github_to_slack_mapping:
   thatsnotamuffin: 
-    slack_username: '"@thatsnotamuffin"'
+    slack_username: "@thatsnotamuffin"
   muffin1:
-    slack_username: '"@muffin1"'
+    slack_username: "@muffin1"
   muffin2:
-    slack_username: '"@muffin2"'
+    slack_username: "@muffin2"
   muffin-team:
-    slack_username: '"#muffin-chat"'
+    slack_username: "#muffin-chat"
