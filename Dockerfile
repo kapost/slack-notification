@@ -9,7 +9,8 @@ RUN apt update && apt install -y \
     awscli \
     python3 \
     pip \
-    gh
+    gh \
+    jq
 
 # Install github cli
 RUN pip install shyaml

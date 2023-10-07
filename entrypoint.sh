@@ -6,7 +6,7 @@ set -xe
 aws s3 cp $S3_URL .
 MAPPING_FILE=$(basename $S3_URL)
 
-echo "$PAT_TOKEN" | gh auth login --with-token
+echo $PAT_TOKEN | gh auth login --with-token
 
 # Gather Pull Request Info and Reviewers
 pr_info=$(gh pr view $PR_NUMBER -R $GITHUB_REPO --json reviewRequests)
@@ -22,8 +22,11 @@ done <<< "$combined_reviewers"
 # Parse YAML file and message users
 for i in ${reviewer_list[@]}; do 
     slack_user=$(cat $MAPPING_FILE | shyaml get-value github_to_slack_mapping.$i.slack_username);
-    curl -X POST -H 'Content-type: application/json' --data '{
-        channel": '$slack_user',
-        "text": "$PR_MESSAGE"
-    }' $PR_WEBHOOK_URL;
+
+    json_payload='{
+        "channel": "'"${slack_user}"'",
+        "text": "'"${PR_MESSAGE}"'"
+    }'
+
+    curl -X POST -H 'Content-type: application/json' --data "${json_payload}" $PR_WEBHOOK_URL;
 done
