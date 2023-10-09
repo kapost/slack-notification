@@ -34,7 +34,9 @@ if aws s3 ls "$NOTIFIED_USERS_URL" >/dev/null 2>&1; then
         done
     done < $NOTIFIED_USERS_FILE
 
+    # Delete and re-create the notified users file
     rm $NOTIFIED_USERS_FILE
+    touch $NOTIFIED_USERS_FILE
 
     for i in ${reviewer_list[@]}; do
         echo $i >> $NOTIFIED_USERS_FILE
