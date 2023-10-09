@@ -32,7 +32,8 @@ jobs:
         - name: Notify Slack
           uses: kapost/slack-notification@script-update
           env:
-            S3_URL: s3://my-bucket/path/to/mapping.yml
+            MAPPING_URL: s3://my-bucket/path/to/mapping.yml
+            NOTIFIED_USERS_URL: s3://my-bucket/pull-requests/app/${{ github.event.pull_request.number }}/notified-users.txt
             PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
             PR_NUMBER: ${{ github.event.pull_request.number }}
             GITHUB_REPO: kapost/slack-notification
