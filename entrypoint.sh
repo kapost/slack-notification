@@ -48,13 +48,14 @@ fi
 # Parse YAML file and message users
 for i in ${reviewer_list[@]}; do 
     slack_user=$(cat $MAPPING_FILE | shyaml get-value github_to_slack_mapping.$i.slack_username);
+    slack_hook=$(cat $MAPPING_FILE | shyaml get-value github_to_slack_mapping.$i.slack_url);
 
     json_payload='{
         "channel": "'"${slack_user}"'",
         "text": "'"${PR_MESSAGE}"'"
     }'
 
-    curl -X POST -H 'Content-type: application/json' --data "${json_payload}" $PR_WEBHOOK_URL;
+    curl -X POST -H 'Content-type: application/json' --data "${json_payload}" $slack_hook;
 done
 
 # Upload notified users file

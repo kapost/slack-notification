@@ -41,12 +41,11 @@ jobs:
           uses: kapost/slack-notification@script-update
           env:
             MAPPING_URL: s3://my-bucket/path/to/mapping.yml
-            NOTIFIED_USERS_URL: s3://my-bucket/pull-requests/app1/${{ github.event.pull_request.number }}/notified-users.txt
+            NOTIFIED_USERS_URL: s3://my-bucket/pull-requests/app/${{ github.event.pull_request.number }}/notified-users.txt
             PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
             PR_NUMBER: ${{ github.event.pull_request.number }}
             GITHUB_REPO: kapost/slack-notification
             PR_MESSAGE: "A Pull Request has been created for your approval by @${{ github.actor }}\nPR Title: ${{ github.event.pull_request.title }}\nPR Link: ${{ github.event.pull_request.html_url}}"
-            PR_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 ```
 
 ### Variables
@@ -58,7 +57,6 @@ jobs:
 | `PR_NUMBER` | Pull Request Number - Advised to pull from the Pull Request event | 1 |
 | `GITHUB_REPO` | GitHub Owner and Repository | kapost/slack-notification |
 | `PR_MESSAGE` | Message to send to the Slack user(s) or channel(s) | "Hello World!" |
-| `PR_WEBHOOK_URL` | Slack Webhook URL | https://hooks.slack.com/services/ABCD/ABCD1234 |
 
 ## Mapping YAML Example
 S3 [user-mapping.yml](user-mapping.yml)
@@ -66,21 +64,24 @@ S3 [user-mapping.yml](user-mapping.yml)
 github_to_slack_mapping:
   thatsnotamuffin: # <-- GitHub User
     slack_username: "@thatsnotamuffin" # <-- Slack User
+    slack_url: "https://hooks.slack.com/services/ABCD/ABCD1234" # <-- WebHook URL
   kapuser1:
     slack_username: "@kapuser1"
+    slack_url: "https://hooks.slack.com/services/ABCD/ABCD1235"
   kapuser2:
     slack_username: "@kapuser2"
-  kapuser-team: # <-- GitHub Team
+    slack_url: "https://hooks.slack.com/services/ABCD/ABCD1236" 
+  kapuser-team:
     slack_username: "#kapuser-chat" # <-- Slack Channel
+    slack_url: "https://hooks.slack.com/services/ABCD/ABCD1237" # <-- WebHook URL
+
 ```
 
 # Versions
 ## v1
-This version only supports Incoming WebHooks custom integrations. This is a legacy custom integration in Slack. Later this action will be updated to support mapping users and channels to individual Webhook URLs
+This version only supports Incoming WebHooks custom integrations. This is a legacy custom integration in Slack. Later this action will be updated to support mapping users and channels to individual Webhook URLs. This version will send repeated notifications to users that have not approved the pull request and channels (if applicable) whenever they requested reviewers is updated. This can be a bit spammy but I'm leaving the `v1` version in place in case there is some use case for it in which `v2` and `v3` do not work.
 
 ## v2
-This version only supports Incoming WebHooks custom integrations. This is a legacy custom integration in Slack. Later this action will be updated to support mapping users and channels to invidual WebHook URLs
-
 Added support to prevent notifying the same user multiple times if other users are requested to review. This is done by adding the `NOTIFIED_USERS_URL` argument. This argument must be specified in order to read or create the file of users that have already been notified. As of the moment, this loops over the file denoted by new lines. 
 
 It is important that the `NOTIFIED_USERS_URL` argument is unique to each pull request, otherwise conflicts may occur between multiple pull requests trying to read the same user file. In the example above this is done by using a `pull-requests/app1` directory, then each `notified-users.txt` file are stored within directories that are separated by their pull request number that is generated from the `github pull request event`.
@@ -90,4 +91,19 @@ Example Formatting in a `notified-users.txt` file
 kapuser1
 kapuser2
 kapuser-team
+```
+
+## v3
+Added support for App integration that requires each user and channel have a separate webhook. There is a bit of overlap with the [GitHub Slack App](https://kapost.slack.com/apps/A01BP7R4KNY-github?tab=more_info). However, this action is meant to notify users and channels directly when added to a pull request rather than make a request to subscribe to multiple repositories. 
+
+### General
+You will need to create a slack app and set the incoming webhook URLs. Follow the instructions [here](https://api.slack.com/messaging/webhooks) for more information.
+
+Afterwards, you will need to create or update (if this action was previously used) your user mapping yaml file. An argument of `slack_url` needs to be added to each user to accommodate the new webhooks. There isn't an arbitrary requirement for each `slack_url` to be unique, it's up to your discretion on the webhook urls used. 
+
+```yaml
+github_to_slack_mapping:
+  thatsnotamuffin: # <-- GitHub User
+    slack_username: "@thatsnotamuffin" # <-- Slack User
+    slack_url: "https://hooks.slack.com/services/ABCD/ABCD1234" # <-- Incoming WebHook URL
 ```

@@ -38,4 +38,3 @@ jobs:
             PR_NUMBER: ${{ github.event.pull_request.number }}
             GITHUB_REPO: kapost/slack-notification
             PR_MESSAGE: "A Pull Request has been created for your approval by @${{ github.actor }}\nPR Title: ${{ github.event.pull_request.title }}\nPR Link: ${{ github.event.pull_request.html_url}}"
-            PR_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
