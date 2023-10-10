@@ -1,9 +1,13 @@
 github_to_slack_mapping:
   thatsnotamuffin: 
     slack_username: "@thatsnotamuffin"
-  muffin1:
-    slack_username: "@muffin1"
-  muffin2:
-    slack_username: "@muffin2"
-  muffin-team:
-    slack_username: "#muffin-chat"
+    slack_url: "https://hooks.slack.com/services/ABCD/ABCD1234"
+  kapuser1:
+    slack_username: "@kapuser1"
+    slack_url: "https://hooks.slack.com/services/ABCD/ABCD1235"
+  kapuser2:
+    slack_username: "@kapuser2"
+    slack_url: "https://hooks.slack.com/services/ABCD/ABCD1236"
+  kapuser-team:
+    slack_username: "#kapuser-chat"
+    slack_url: "https://hooks.slack.com/services/ABCD/ABCD1237"
